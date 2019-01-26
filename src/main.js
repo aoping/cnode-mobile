@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import './plugins/muse-ui'
+import './plugins/vue-scroller'
 
 Vue.config.productionTip = false
 

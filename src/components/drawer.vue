@@ -8,17 +8,35 @@
         <mu-icon value="account_circle"></mu-icon>
       </mu-button>
     </mu-appbar>
-    <mu-drawer :open.sync="open" :right="false">
+    <mu-drawer :open.sync="open" :right="false" :docked="false">
       <mu-list>
-        <mu-list-item button>
-          <mu-list-item-title>Menu Item 1</mu-list-item-title>
-        </mu-list-item>
-        <mu-list-item button>
-          <mu-list-item-title>Menu Item 2</mu-list-item-title>
-        </mu-list-item>
-        <mu-list-item @click="open = false" button>
-          <mu-list-item-title>Close</mu-list-item-title>
-        </mu-list-item>
+        <router-link to="/login" v-if="!isLogin">
+          <mu-list-item button>
+            <mu-icon value="account_circle"></mu-icon>
+            <mu-list-item-title>登录</mu-list-item-title>
+          </mu-list-item>
+        </router-link>
+        <router-link to="/login" v-else>
+          <mu-list-item button>
+            <mu-avatar :size="40">
+              <img src="https://muse-ui.org/img/uicon.ac3913bf.jpg">
+            </mu-avatar>
+          </mu-list-item>
+        </router-link>
+        <mu-divider></mu-divider>
+        <mu-sub-header>分类</mu-sub-header>
+        <router-link v-for="item in indexTab" :key="item.title" :to="item.href">
+          <mu-list-item button>
+            <mu-list-item-title>{{item.title}}</mu-list-item-title>
+          </mu-list-item>
+        </router-link>
+        <mu-divider></mu-divider>
+        <mu-sub-header>个人中心</mu-sub-header>
+        <router-link v-for="item in adminTab" :key="item.title" :to="item.href">
+          <mu-list-item button>
+            <mu-list-item-title>{{item.title}}</mu-list-item-title>
+          </mu-list-item>
+        </router-link>
       </mu-list>
     </mu-drawer>
     <slot></slot>
@@ -26,11 +44,18 @@
 </template>
 
 <script>
+import config from "@/config";
 export default {
   data() {
     return {
-      open: false
+      open: false,
+      indexTab: config.indexTab,
+      adminTab: config.adminTab,
+      isLogin: false
     };
+  },
+  created() {
+    console.log(this.indexTab, this.adminTab);
   },
   components: {}
 };

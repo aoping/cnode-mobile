@@ -1,14 +1,14 @@
 <template>
   <mu-container style="padding: 0">
     <Drawer/>
-    <div>
+    <scroller class="scroller" :on-refresh="refresh" :on-infinite="infinite">
       <p v-for="i in 100" :key="i">{{i}}</p>
-    </div>
+    </scroller>
   </mu-container>
 </template>
 
 <script>
-import Drawer from "@/components/drawer";
+import Drawer from "@/components/Drawer";
 
 export default {
   data() {
@@ -18,9 +18,20 @@ export default {
   },
   components: {
     Drawer
+  },
+  methods: {
+    refresh() {
+      console.log("refresh");
+    },
+    infinite() {
+      console.log("infinite");
+    }
   }
 };
 </script>
 
 <style scoped>
+.scroller {
+  margin-top: 56px;
+}
 </style>
