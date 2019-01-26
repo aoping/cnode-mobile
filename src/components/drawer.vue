@@ -25,11 +25,9 @@
         </router-link>
         <mu-divider></mu-divider>
         <mu-sub-header>分类</mu-sub-header>
-        <router-link v-for="item in indexTab" :key="item.title" :to="item.href">
-          <mu-list-item button>
-            <mu-list-item-title>{{item.title}}</mu-list-item-title>
-          </mu-list-item>
-        </router-link>
+        <mu-list-item button v-for="item in indexTab" :key="item.title" @click="setTab(item.tab)">
+          <mu-list-item-title>{{item.title}}</mu-list-item-title>
+        </mu-list-item>
         <mu-divider></mu-divider>
         <mu-sub-header>个人中心</mu-sub-header>
         <router-link v-for="item in adminTab" :key="item.title" :to="item.href">
@@ -57,7 +55,13 @@ export default {
   created() {
     console.log(this.indexTab, this.adminTab);
   },
-  components: {}
+  components: {},
+  methods: {
+    setTab(tab) {
+      this.open = false;
+      this.$emit("setTab", tab);
+    }
+  }
 };
 </script>
 

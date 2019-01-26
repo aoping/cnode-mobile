@@ -1,27 +1,28 @@
 export default {
+  PAGENUM: 20,
   indexTab: [{
       title: '全部',
-      href: '/',
+      tab: '',
     },
     {
       title: '精华',
-      href: '/?tab=good',
+      tab: 'good',
     },
     {
       title: '分享',
-      href: '/?tab=share',
+      tab: 'share',
     },
     {
       title: '问答',
-      href: '/?tab=ask',
+      tab: 'ask',
     },
     {
       title: '招聘',
-      href: '/?tab=job',
+      tab: 'job',
     },
     {
       title: '客户端测试',
-      href: '/?tab=dev',
+      tab: 'dev',
     },
   ],
   adminTab: [{

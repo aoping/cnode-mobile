@@ -1,30 +1,76 @@
 <template>
-  <mu-container style="padding: 0">
-    <Drawer/>
-    <scroller class="scroller" :on-refresh="refresh" :on-infinite="infinite">
-      <p v-for="i in 100" :key="i">{{i}}</p>
+  <mu-container style="padding: 0" v-loading="loading">
+    <Drawer @setTab="setTab"/>
+    <scroller ref="scroller" class="scroller" :on-refresh="refresh" :on-infinite="infinite">
+      <div v-for="topic in list" :key="topic.id">
+        <TopicItem :topic="topic"/>
+      </div>
     </scroller>
   </mu-container>
 </template>
 
 <script>
 import Drawer from "@/components/Drawer";
-
+import TopicItem from "@/components/TopicItem";
+import { getTopics } from "@/api";
+import config from "@/config";
+import { setTimeout } from "timers";
 export default {
   data() {
     return {
-      open: false
+      list: [],
+      page: 1,
+      tab: "all",
+      loading: true,
+      finished: false
     };
   },
   components: {
-    Drawer
+    Drawer,
+    TopicItem
+  },
+  async created() {
+    this.getTopics();
   },
   methods: {
-    refresh() {
-      console.log("refresh");
+    setTab(tab) {
+      this.finished = false;
+      this.page = 1;
+      this.tab = tab;
+      this.getTopics();
     },
-    infinite() {
-      console.log("infinite");
+    async getTopics(callback) {
+      this.loading = true;
+      const result = await getTopics(this.page, this.tab);
+      if (result.success) {
+        this.list = result.data;
+      }
+      this.loading = false;
+      callback && callback();
+    },
+    async loadmore(callback) {
+      const result = await getTopics(this.page, this.tab);
+      if (result.success) {
+        this.list = this.list.concat(result.data);
+        if (result.data.length < config.PAGENUM) this.finished = true;
+      }
+      callback && callback();
+    },
+    refresh(done) {
+      setTimeout(() => {
+        this.page = 1;
+        this.getTopics(done);
+      }, 1000);
+    },
+    infinite(done) {
+      if (this.finished) {
+        this.$refs.scroller.finishInfinite(true);
+        return;
+      }
+      setTimeout(() => {
+        this.page++;
+        this.loadmore(done);
+      }, 1000);
     }
   }
 };
