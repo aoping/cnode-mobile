@@ -1,6 +1,6 @@
 <template>
   <mu-container style="padding: 0" v-loading="loading">
-    <Drawer @setTab="setTab"/>
+    <Drawer :title="nav.title" @setTab="setTab"/>
     <scroller ref="scroller" class="scroller" :on-refresh="refresh" :on-infinite="infinite">
       <div v-for="topic in list" :key="topic.id">
         <TopicItem :topic="topic"/>
@@ -20,7 +20,7 @@ export default {
     return {
       list: [],
       page: 1,
-      tab: "all",
+      nav: null,
       loading: true,
       finished: false
     };
@@ -30,18 +30,19 @@ export default {
     TopicItem
   },
   async created() {
+    this.nav = config.indexTab[0];
     this.getTopics();
   },
   methods: {
     setTab(tab) {
       this.finished = false;
       this.page = 1;
-      this.tab = tab;
+      this.nav = tab;
       this.getTopics();
     },
     async getTopics(callback) {
       this.loading = true;
-      const result = await getTopics(this.page, this.tab);
+      const result = await getTopics(this.page, this.nav.tab);
       if (result.success) {
         this.list = result.data;
       }
@@ -49,7 +50,7 @@ export default {
       callback && callback();
     },
     async loadmore(callback) {
-      const result = await getTopics(this.page, this.tab);
+      const result = await getTopics(this.page, this.nav.tab);
       if (result.success) {
         this.list = this.list.concat(result.data);
         if (result.data.length < config.PAGENUM) this.finished = true;

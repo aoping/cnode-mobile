@@ -1,9 +1,10 @@
 <template>
   <div>
-    <mu-appbar style="width: 100%;" color="#fff" textColor="#000">
+    <mu-appbar style="width: 100%;text-align:center;" color="#fff" textColor="#000">
       <mu-button icon slot="left" @click="open = !open">
         <mu-icon value="menu"></mu-icon>
-      </mu-button>Title
+      </mu-button>
+      {{title}}
       <mu-button flat slot="right" href="/login">
         <mu-icon value="account_circle"></mu-icon>
       </mu-button>
@@ -25,7 +26,7 @@
         </router-link>
         <mu-divider></mu-divider>
         <mu-sub-header>分类</mu-sub-header>
-        <mu-list-item button v-for="item in indexTab" :key="item.title" @click="setTab(item.tab)">
+        <mu-list-item button v-for="item in indexTab" :key="item.title" @click="setTab(item)">
           <mu-list-item-title>{{item.title}}</mu-list-item-title>
         </mu-list-item>
         <mu-divider></mu-divider>
@@ -44,6 +45,7 @@
 <script>
 import config from "@/config";
 export default {
+  props: ["title"],
   data() {
     return {
       open: false,
@@ -52,9 +54,7 @@ export default {
       isLogin: false
     };
   },
-  created() {
-    console.log(this.indexTab, this.adminTab);
-  },
+  created() {},
   components: {},
   methods: {
     setTab(tab) {
