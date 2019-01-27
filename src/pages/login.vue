@@ -48,10 +48,9 @@ export default {
         let result = await this.$refs.form.validate();
         if (result) {
           let res = await accesstoken(this.validateForm.accesstoken);
-          console.log(res);
           if (res) {
-            console.log("xxx");
             this.setUserInfo(res);
+            window.window.sessionStorage.user = JSON.stringify(res);
             this.$router.push("/");
           } else {
             this.$toast.warning("Access Token不正确1");
@@ -60,7 +59,6 @@ export default {
           this.$toast.warning("Access Token不正确2");
         }
       } catch (e) {
-        console.log(e);
         this.$toast.warning("Access Token不正确3");
       }
     }
