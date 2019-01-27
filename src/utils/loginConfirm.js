@@ -23,10 +23,13 @@ export default async function loginConfirm(vm) {
       res.accesstoken = value;
       vm.setUserInfo(res);
       window.window.sessionStorage.user = JSON.stringify(res);
+      return true
     } else {
       vm.$toast.message("Access Token不正确");
+      return false
     }
   } else {
     // 关闭弹窗
+    return false
   }
 }

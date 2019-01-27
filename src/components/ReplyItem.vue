@@ -13,8 +13,15 @@
           style="display:inline-block;top:0;font-size:18px;margin:0"
           :style="{color: uped?'#2196f3':'#000'}"
         >{{reply.ups && reply.ups.length}}</p>
-        <mu-icon value="reply" size="18"></mu-icon>
+        <mu-icon value="reply" size="18" @click="showMarkdown"></mu-icon>
       </div>
+      <Markdown
+        v-if="markdownSign"
+        ref="markdown"
+        :height="100"
+        @commitValue="commitValue"
+        :initialValue="initialValue"
+      />
     </mu-card-header>
     <mu-card-text v-html="reply.content"></mu-card-text>
   </mu-card>
@@ -24,7 +31,8 @@
 import { mapState, mapActions } from "vuex";
 import { getLastTimeStr } from "@/utils/filters/local";
 import loginConfirm from "@/utils/loginConfirm";
-import { ups, accesstoken } from "@/api";
+import { ups, replies } from "@/api";
+import Markdown from "@/components/Markdown";
 
 export default {
   props: ["reply"],
@@ -32,9 +40,14 @@ export default {
     getLastTimeStr
   },
   data() {
-    return {};
+    return {
+      markdownSign: false,
+      initialValue: ""
+    };
   },
-  components: {},
+  components: {
+    Markdown
+  },
   computed: {
     ...mapState(["userInfo"]),
     uped() {
@@ -46,7 +59,8 @@ export default {
     ...mapActions(["setUserInfo"]),
     async ups() {
       if (!this.userInfo.id) await loginConfirm(this);
-      const res = await ups(this.reply.id, this.userInfo.accesstoken);
+      if (!this.userInfo.id) return;
+      const res = await ups(this.userInfo.accesstoken, this.reply.id);
       if (res.success) {
         if (res.action === "up") this.reply.ups.push(this.userInfo.id);
         else {
@@ -58,6 +72,16 @@ export default {
       } else {
         this.$toast.message("操作失败");
       }
+    },
+    showMarkdown() {
+      this.initialValue = "@" + this.userInfo.loginname + "  ";
+      this.markdownSign = !this.markdownSign;
+    },
+    async commitValue(content) {
+      if (!this.userInfo.id) await loginConfirm(this);
+      if (!this.userInfo.id) return;
+      this.$emit("commitValue", content);
+      this.markdownSign = false;
     }
   }
 };

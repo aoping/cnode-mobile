@@ -19,8 +19,15 @@ export function accesstoken(accesstoken) {
   })
 }
 
-export function ups(topicid, accesstoken) {
+export function ups(accesstoken, topicid) {
   return axios.post(`/reply/${topicid}/ups`, {
     accesstoken
+  })
+}
+
+export function replies(accesstoken, topicid, content) {
+  return axios.post(`/topic/${topicid}/replies`, {
+    accesstoken,
+    content,
   })
 }

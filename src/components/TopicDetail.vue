@@ -14,7 +14,7 @@
     </mu-card>
     <mu-sub-header>回复</mu-sub-header>
     <div v-for="reply in topic.replies" :key="reply.id">
-      <ReplyItem :reply="reply" @toLogin="toLogin"/>
+      <ReplyItem :reply="reply" @commitValue="commitValue"/>
     </div>
   </div>
 </template>
@@ -38,8 +38,9 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
-    toLogin() {
-      this.$router.push("/login?redirectUrl=/topic/" + this.topic.id);
+    commitValue(content) {
+      console.log("commitValue2" + content);
+      this.$emit("commitValue", content);
     }
   }
 };
