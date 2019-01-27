@@ -22,7 +22,8 @@ export default {
       page: 1,
       nav: null,
       loading: true,
-      finished: false
+      finished: false,
+      position: null
     };
   },
   components: {
@@ -73,6 +74,22 @@ export default {
         this.loadmore(done);
       }, 1000);
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    console.log("beforeRouteEnter");
+    next(vm => {
+      // 通过 `vm` 访问组件实例
+      // vue-scroller有bug, 无法通过scrollTo设置滚动
+      if (vm.position) vm.$refs.scroller.scroller.__scrollTop = vm.position.top;
+    });
+  },
+  beforeRouteLeave(to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    console.log("beforeRouteLeave");
+    this.position = this.$refs.scroller.getPosition();
+    console.log(this.position);
+    next();
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
-    <router-link to="/">
+    <router-link :to="'/topic/'+topic.id">
       <mu-card-text>
         <mu-badge v-if="topic.top" content="精华" color="secondary"></mu-badge>
         {{topic.title}}
