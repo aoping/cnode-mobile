@@ -47,7 +47,6 @@ export default {
   },
   methods: {
     async commitValue(content) {
-      console.log("commitValue3" + content);
       const res = await replies(
         this.userInfo.accesstoken,
         this.topic.id,

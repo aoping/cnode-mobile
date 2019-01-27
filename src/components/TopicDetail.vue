@@ -39,7 +39,6 @@ export default {
   },
   methods: {
     commitValue(content) {
-      console.log("commitValue2" + content);
       this.$emit("commitValue", content);
     }
   }
