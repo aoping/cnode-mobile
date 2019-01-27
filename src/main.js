@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './vuex'
 import './plugins/muse-ui'
 import './plugins/vue-scroller'
 
@@ -12,6 +13,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: {
     App
   },

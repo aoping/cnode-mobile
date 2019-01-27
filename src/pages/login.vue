@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import Header from "@/components/Header";
 import { accesstoken } from "@/api";
 import { setTimeout } from "timers";
@@ -41,12 +42,26 @@ export default {
     Header
   },
   methods: {
+    ...mapActions(["setUserInfo"]),
     async submit() {
-      let result = await this.$refs.form.validate();
-      if (result) {
-        let res = await accesstoken(this.validateForm.accesstoken);
-      } else {
-        this.$toast.warning("Access Token不正确");
+      try {
+        let result = await this.$refs.form.validate();
+        if (result) {
+          let res = await accesstoken(this.validateForm.accesstoken);
+          console.log(res);
+          if (res) {
+            console.log("xxx");
+            this.setUserInfo(res);
+            this.$router.push("/");
+          } else {
+            this.$toast.warning("Access Token不正确1");
+          }
+        } else {
+          this.$toast.warning("Access Token不正确2");
+        }
+      } catch (e) {
+        console.log(e);
+        this.$toast.warning("Access Token不正确3");
       }
     }
   }
