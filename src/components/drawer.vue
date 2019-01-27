@@ -11,19 +11,15 @@
     </mu-appbar>
     <mu-drawer :open.sync="open" :right="false" :docked="false">
       <mu-list>
-        <router-link to="/login" v-if="!isLogin">
-          <mu-list-item button>
-            <mu-icon value="account_circle"></mu-icon>
-            <mu-list-item-title>登录</mu-list-item-title>
-          </mu-list-item>
-        </router-link>
-        <router-link to="/login" v-else>
-          <mu-list-item button>
-            <mu-avatar :size="40">
-              <img src="https://muse-ui.org/img/uicon.ac3913bf.jpg">
-            </mu-avatar>
-          </mu-list-item>
-        </router-link>
+        <mu-list-item v-if="!isLogin" button @click="toLogin">
+          <mu-icon value="account_circle"></mu-icon>
+          <mu-list-item-title>登录</mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item v-else button @click="toLogin">
+          <mu-avatar :size="40">
+            <img src="https://muse-ui.org/img/uicon.ac3913bf.jpg">
+          </mu-avatar>
+        </mu-list-item>
         <mu-divider></mu-divider>
         <mu-sub-header>分类</mu-sub-header>
         <mu-list-item button v-for="item in indexTab" :key="item.title" @click="setTab(item)">
@@ -60,6 +56,10 @@ export default {
     setTab(tab) {
       this.open = false;
       this.$emit("setTab", tab);
+    },
+    toLogin() {
+      this.open = false;
+      this.$router.push("/login");
     }
   }
 };

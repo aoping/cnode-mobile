@@ -11,3 +11,10 @@ export function getTopics(
 export function getTopicDetail(id) {
   return axios.get(`/topic/${id}`)
 }
+
+
+export function accesstoken(accesstoken) {
+  return axios.post('/accesstoken', {
+    accesstoken
+  })
+}
