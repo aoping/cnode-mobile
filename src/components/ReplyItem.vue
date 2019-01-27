@@ -23,6 +23,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import { getLastTimeStr } from "@/utils/filters/local";
+import loginConfirm from "@/utils/loginConfirm";
 import { ups, accesstoken } from "@/api";
 
 export default {
@@ -44,45 +45,18 @@ export default {
   methods: {
     ...mapActions(["setUserInfo"]),
     async ups() {
-      if (!this.userInfo.id) {
-        const { result, value } = await this.$prompt(
-          "请输入Access Token",
-          "提示",
-          {
-            validator(val) {
-              console.log(val);
-              return {
-                valid: /.{36}/.test(val),
-                message: "请输入正确Access Token"
-              };
-            }
-          }
-        );
-        if (result) {
-          let res = await accesstoken(value);
-          if (res) {
-            res.accesstoken = value;
-            this.setUserInfo(res);
-            window.window.sessionStorage.user = JSON.stringify(res);
-          } else {
-            this.$toast.message("Access Token不正确");
-          }
-        } else {
-          // 关闭弹窗
+      if (!this.userInfo.id) await loginConfirm(this);
+      const res = await ups(this.reply.id, this.userInfo.accesstoken);
+      if (res.success) {
+        if (res.action === "up") this.reply.ups.push(this.userInfo.id);
+        else {
+          const index = this.reply.ups.findIndex(
+            item => item.id === this.userInfo.id
+          );
+          this.reply.ups.splice(index, 1);
         }
       } else {
-        const res = await ups(this.reply.id, this.userInfo.accesstoken);
-        if (res.success) {
-          if (res.action === "up") this.reply.ups.push(this.userInfo.id);
-          else {
-            const index = this.reply.ups.findIndex(
-              item => item.id === this.userInfo.id
-            );
-            this.reply.ups.splice(index, 1);
-          }
-        } else {
-          this.$toast.message("操作失败");
-        }
+        this.$toast.message("操作失败");
       }
     }
   }
