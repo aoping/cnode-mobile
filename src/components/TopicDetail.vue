@@ -14,12 +14,13 @@
     </mu-card>
     <mu-sub-header>回复</mu-sub-header>
     <div v-for="reply in topic.replies" :key="reply.id">
-      <ReplyItem :reply="reply"/>
+      <ReplyItem :reply="reply" @toLogin="toLogin"/>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { getLastTimeStr } from "@/utils/filters/local";
 import ReplyItem from "@/components/ReplyItem";
 export default {
@@ -32,6 +33,14 @@ export default {
   },
   components: {
     ReplyItem
+  },
+  computed: {
+    ...mapState(["userInfo"])
+  },
+  methods: {
+    toLogin() {
+      this.$router.push("/login?redirectUrl=/topic/" + this.topic.id);
+    }
   }
 };
 </script>
