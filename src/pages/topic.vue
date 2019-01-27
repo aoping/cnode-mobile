@@ -2,7 +2,7 @@
   <mu-container style="padding: 0" v-loading="loading">
     <Header title="主题"/>
     <scroller ref="scroller" class="scroller">
-      <TopicDetail v-if="topic" :topic="topic">{{topic}}</TopicDetail>
+      <TopicDetail v-if="topic" :topic="topic" style="padding-bottom: 56px;">{{topic}}</TopicDetail>
     </scroller>
   </mu-container>
 </template>
@@ -40,3 +40,4 @@ export default {
   margin-top: 56px;
 }
 </style>
+
