@@ -33,7 +33,12 @@
         </mu-list-item>
         <mu-divider></mu-divider>
         <mu-sub-header>个人中心</mu-sub-header>
-        <router-link v-for="item in adminTab" :key="item.title" :to="item.href">
+        <router-link
+          v-for="item in adminTab"
+          :key="item.title"
+          :to="item.href"
+          @click.native="open=false"
+        >
           <mu-list-item button>
             <mu-list-item-title>{{item.title}}</mu-list-item-title>
           </mu-list-item>

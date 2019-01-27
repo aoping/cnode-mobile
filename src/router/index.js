@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from '@/pages/index'
 import Login from '@/pages/login'
 import Topic from '@/pages/topic'
+import About from '@/pages/about'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/topic/:id',
       name: 'Topic',
       component: Topic
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: About
     },
   ],
   scrollBehavior(to, from, savedPosition) {

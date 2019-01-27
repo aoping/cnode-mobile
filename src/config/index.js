@@ -26,12 +26,7 @@ export default {
     },
   ],
   adminTab: [{
-      title: '消息',
-      href: '/message',
-    },
-    {
-      title: '关于',
-      href: '/about',
-    },
-  ]
+    title: '关于',
+    href: '/about',
+  }, ]
 }
